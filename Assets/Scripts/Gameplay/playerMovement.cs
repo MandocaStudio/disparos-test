@@ -40,12 +40,21 @@ public class playerMovement : MonoBehaviour
 
     [SerializeField] private Transform playerBody; // referencia al jugador
     [SerializeField] private Vector3 cameraOffset;
+
+    [SerializeField] private float mouseSensitivity;   // sensibilidad más baja
+    [SerializeField] private float gamepadSensitivity;  // sensibilidad más alta
     private void Awake()
     {
+        // mouseSensitivity = 0.1f;
+        // gamepadSensitivity = 1f;
+
+        // Oculta el cursor y bloquearlo en el centro de la pantalla (principalmente al buildear)
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         playerBody = transform;
 
-        cameraOffset = new Vector3(0, 1.5f, 0);
+        cameraOffset = new Vector3(0, 1.4f, 0);
         playerManagerScript = GetComponent<playerManager>();
         rbPlayer = GetComponent<Rigidbody>();
 
@@ -77,12 +86,28 @@ public class playerMovement : MonoBehaviour
     }
 
 
-    // altura típica a la cabeza
-
     private void LateUpdate()
     {
-        float mouseX = lookInput.x * sensitivity;
-        float mouseY = lookInput.y * sensitivity;
+        // Detectar de qué dispositivo vino el último input
+        float sensitivityToUse = mouseSensitivity; // por defecto
+
+        if (lookInput != Vector2.zero)
+        {
+            // Si viene de un gamepad
+            if (controls.Player.MoveCam.activeControl.device is Gamepad)
+            {
+                sensitivityToUse = gamepadSensitivity;
+            }
+            // Si viene del mouse
+            else if (controls.Player.MoveCam.activeControl.device is Mouse)
+            {
+                sensitivityToUse = mouseSensitivity;
+            }
+        }
+
+        // Aplicar sensibilidad correspondiente
+        float mouseX = lookInput.x * sensitivityToUse;
+        float mouseY = lookInput.y * sensitivityToUse;
 
         // Acumular rotaciones
         yaw += mouseX;
@@ -91,12 +116,13 @@ public class playerMovement : MonoBehaviour
         // Limitar pitch
         pitch = Mathf.Clamp(pitch, -45f, 45f);
 
-        // Actualizar la posición del cameraTarget para que siga al jugador
+        // Actualizar posición del cameraTarget (manteniendo offset relativo al jugador)
         cameraTarget.transform.position = playerBody.position + cameraOffset;
 
         // Aplicar rotación del input SOLO al cameraTarget
         cameraTarget.transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
     }
+
 
 
 
@@ -120,6 +146,8 @@ public class playerMovement : MonoBehaviour
     [SerializeField] private float rotationSpeedMoving = 5f;   // más lento, mientras camina
     [SerializeField] private float rotationSpeedIdle = 12f;    // más rápido, al soltar y volver a mover
 
+    private bool wasIdle = true; // para saber si estaba quieto antes
+
     private void FixedUpdate()
     {
         // --- Movimiento relativo a la cámara ---
@@ -136,26 +164,41 @@ public class playerMovement : MonoBehaviour
         velocity.y = rbPlayer.linearVelocity.y;
         rbPlayer.linearVelocity = velocity;
 
-        // --- Rotación del jugador sincronizada con cámara ---
+        // --- Rotación del jugador ---
         if (moveInput.magnitude > 0.1f) // SOLO si se mueve
         {
             float cameraYaw = cameraTarget.transform.eulerAngles.y;
             Quaternion targetRotation = Quaternion.Euler(0, cameraYaw, 0);
 
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                rotationSpeedMoving * Time.deltaTime
-            );
-        }
+            if (wasIdle)
+            {
+                // Si estaba quieto y empieza a moverse → giro inmediato
+                transform.rotation = targetRotation;
+            }
+            else
+            {
+                // Si ya estaba moviéndose → giro suave
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    rotationSpeedMoving * Time.deltaTime
+                );
+            }
 
-        // Si está quieto, no forzamos la rotación del personaje
+            wasIdle = false; // ya no está quieto
+        }
+        else
+        {
+            // El jugador está quieto
+            wasIdle = true;
+        }
 
         // --- Animator ---
         animator.SetFloat("moveX", moveInput.x);
         animator.SetFloat("moveY", moveInput.y);
         animator.SetFloat("speed", moveInput.magnitude);
 
+        //esto para cuando tengamos unas buenas animaciones para detener la caminata
         if (moveInput.magnitude > 0.1f)
         {
             animator.SetFloat("lastMoveX", moveInput.x);

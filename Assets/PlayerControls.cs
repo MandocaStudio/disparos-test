@@ -196,17 +196,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""b3bf01c1-7e07-45de-a8d8-047a4874ef41"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
                     ""id"": ""67db7c45-88ed-4273-bc50-617fe8c9231e"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
@@ -218,8 +207,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""8d0c9e39-ae5c-4920-b015-6bb27e1cc249"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""id"": ""2fdaa02b-743c-4b0a-b6e0-7ded4ca68b23"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
@@ -228,9 +217,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""2fdaa02b-743c-4b0a-b6e0-7ded4ca68b23"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""name"": ""Left"",
+                    ""id"": ""b0ca7243-1d36-4c58-b0ec-3c6e0ba1338b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";teclado;KeyBoard"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""cac85058-2ea4-46b7-8770-a6e11e1ad90c"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";teclado;KeyBoard"",
@@ -259,61 +259,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""8cbc49d3-edbd-497c-a13a-16a2fb101233"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MoveCam"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""6a7c5b4a-5b7f-48f3-ab75-696bcba7a5a8"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""MoveCam"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""fdbefe3b-f41e-444c-8eb1-1edd090a4e0f"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""MoveCam"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""8b4ea493-13d0-4062-a9a2-48f7bffc0d3a"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""MoveCam"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""a90abab9-bd1d-436c-b837-55d9e130d8e6"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";teclado;KeyBoard"",
-                    ""action"": ""MoveCam"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
