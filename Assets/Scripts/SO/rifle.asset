@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: rifle
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  itemID: WP01
+  itemName: Rifle
+  itemDescription: es un rifle xd
+  inventorySlots: 2
+  inventorySlotsCount: 1
+  itemIcon: {fileID: 0}
+  itemtypeEnum: 0
+  baseDamage: 5
+  baseFireRate: 1
+  baseRange: 5
+  crosshairPrefab: {fileID: 7542808567622046711, guid: 3cbea7df8aa0ec44a8f3aebcaefe4528, type: 3}
+  weaponPrefab: {fileID: 0}

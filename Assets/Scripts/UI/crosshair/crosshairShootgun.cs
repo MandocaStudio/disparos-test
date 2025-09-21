@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class crosshairRifle : CrosshairBase
+public class crosshairShootgun : CrosshairBase
 {
-
     public override float ZoomCameraDistance => 0.9f;
 
     [SerializeField] private RectTransform top;
@@ -14,6 +13,8 @@ public class crosshairRifle : CrosshairBase
 
     [SerializeField] private CanvasGroup centerRifle;
 
+
+    public float zoomCameraDistance = 0.9f;
 
     [SerializeField] private float baseSize = 10f; // distancia mínima
     [SerializeField] private float maxExpand = 40f; // expansión máxima

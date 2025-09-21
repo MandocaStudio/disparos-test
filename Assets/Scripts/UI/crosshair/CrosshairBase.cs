@@ -6,6 +6,8 @@ public abstract class CrosshairBase : MonoBehaviour
 
     public abstract void SetPrecision(float precision);
 
+    public abstract float ZoomCameraDistance { get; }
+
 }
 
 

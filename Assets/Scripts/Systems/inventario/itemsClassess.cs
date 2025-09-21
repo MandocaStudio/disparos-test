@@ -1,19 +1,6 @@
+using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewArmor", menuName = "Inventory/Armor")]
-public class Armor : ItemClass
-{
-    public int fisicDefense;
-    public int magicDefense;
-    public void Initialize(string name, string description, Sprite icon, int defensa, int magic)
-    {
-        base.Initialize(name, description, icon, ItemType.armor);
-        itemtypeEnum = ItemType.armor;  // Asignación del tipo correctamente
-
-        fisicDefense = defensa;
-        magicDefense = magic;
-    }
-}
 
 [CreateAssetMenu(fileName = "NewKey", menuName = "Inventory/Key")]
 public class Key : ItemClass
@@ -23,7 +10,6 @@ public class Key : ItemClass
     public void Initialize(string name, string description, Sprite icon, bool Use, string keyName)
     {
         base.Initialize(name, description, icon, ItemType.key);
-        itemtypeEnum = ItemType.key;  // Asignación del tipo correctamente
 
         oneUse = Use;
 
@@ -32,38 +18,38 @@ public class Key : ItemClass
 
 }
 
-[CreateAssetMenu(fileName = "New Accessories", menuName = "Inventory/Accessory")]
-public class accesories : ItemClass
-{
-    public void Initialize(string name, string description, Sprite icon)
-    {
-        base.Initialize(name, description, icon, ItemType.key);
-        itemtypeEnum = ItemType.key;  // Asignación del tipo correctamente
+// [CreateAssetMenu(fileName = "New Accessories", menuName = "Inventory/Accessory")]
+// public class accesories : ItemClass
+// {
+//     public void Initialize(string name, string description, Sprite icon)
+//     {
+//         base.Initialize(name, description, icon, ItemType.key);
+//         itemtypeEnum = ItemType.key;  // Asignación del tipo correctamente
 
-    }
+//     }
 
-}
+// }
 
-[CreateAssetMenu(fileName = "NewPotion", menuName = "Inventory/Potion")]
-public class Potion : ItemClass
+[CreateAssetMenu(fileName = "NewConsumable", menuName = "Inventory/Potion")]
+public class consumable : ItemClass
 {
 
     public int potionAmount;
 
-    public enum potionEffect
+    public enum consumableType
     {
         heal,
-        mana,
-        poison
+        cordura,
+        other,
+        FlashLightBatery
         //no que mas
     }
 
-    public potionEffect potionType;
+    public consumableType potionType;
 
-    public void Initialize(string name, string description, Sprite icon, int amount, potionEffect Type)
+    public void Initialize(string name, string description, Sprite icon, int amount, consumableType Type)
     {
-        base.Initialize(name, description, icon, ItemType.potion);
-        itemtypeEnum = ItemType.potion;  // Asignación del tipo correctamente
+        base.Initialize(name, description, icon, ItemType.consumable);
 
         potionAmount = amount;
         potionType = Type;
@@ -73,15 +59,14 @@ public class Potion : ItemClass
 }
 
 [CreateAssetMenu(fileName = "questItems", menuName = "Inventory/questItems")]
-public class QuestItems : ItemClass
+public class questitem : ItemClass
 {
 
     public string questItemName;
 
     public void Initialize(string name, string description, Sprite icon, string itemName)
     {
-        base.Initialize(name, description, icon, ItemType.questitems);
-        itemtypeEnum = ItemType.questitems;  // Asignación del tipo correctamente
+        base.Initialize(name, description, icon, ItemType.questitem);
 
         questItemName = itemName;
 
@@ -93,17 +78,49 @@ public class QuestItems : ItemClass
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Inventory/Weapon")]
 public class Weapon : ItemClass
 {
+    public float baseDamage;
+    public float baseFireRate;
+    public float baseRange;
 
-    public int physicDamage;
+    public GameObject crosshairPrefab; // referencia a la mira
+    public GameObject weaponPrefab; // Aquí enlazas el prefab del modelo
 
-    public int magicDamage;
 
-    public void Initialize(string name, string description, Sprite icon, int mDamage, int pDamage)
+
+    public void Initialize(string name, string description, Sprite icon, float Damage, float fireRate, GameObject crosshair, GameObject prefab, float Range)
     {
         base.Initialize(name, description, icon, ItemType.weapon);
-        itemtypeEnum = ItemType.weapon;  // Asignación del tipo correctamente
 
-        physicDamage = mDamage;
-        magicDamage = pDamage;
+        baseDamage = Damage;
+        baseRange = Range;
+        baseFireRate = fireRate;
+        crosshairPrefab = crosshair;
+        weaponPrefab = prefab;
+
+    }
+}
+
+
+[CreateAssetMenu(fileName = "NewWeaponAmount", menuName = "Inventory/Amount")]
+public class ammo : ItemClass
+{
+    public enum AmountType
+    {
+        shootgun,
+        pistol,
+        rifle,
+        smp
+        //no que mas
+    }
+
+    public AmountType amountTypeVar; // referencia a la mira
+
+
+    public void Initialize(string name, string description, Sprite icon, AmountType amountType)
+    {
+        base.Initialize(name, description, icon, ItemType.weapon);
+
+        amountTypeVar = amountType;
+
     }
 }

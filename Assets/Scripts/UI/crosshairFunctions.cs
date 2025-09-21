@@ -10,31 +10,22 @@ public class crosshairFunctions : MonoBehaviour
 {
     public CinemachineCamera playerCam;
 
-    [SerializeField] private crosshairRifle RifleCrosshair;
-
-    // [SerializeField] private crosshairPistol PistolCrosshair;
-
-    // [SerializeField] private crosshairShotgun ShotgunCrosshair;
-
     [SerializeField] private CrosshairBase activeCrosshair;
 
     public playerManager playerManagerScript;
     public PlayerControls controls;
 
     [SerializeField] private float decaySpeed = 2f; // velocidad para volver a 0
-
-
     public float defaultCameraDistance = 1.5f;
+
+    [Header("variables del arma")]
+    private GameObject currentCrosshairObj;
+
+    private float weaponCameraDistance;
+
+
     private void Awake()
     {
-
-        RifleCrosshair.gameObject.SetActive(false);
-        // crosshairPistol.gameObject.SetActive(false);
-        // crosshairShotgun.gameObject.SetActive(false);
-
-
-        activeCrosshair = RifleCrosshair;
-
         playerCam = playerManagerScript.playerCam;
 
         controls = new PlayerControls();
@@ -42,6 +33,17 @@ public class crosshairFunctions : MonoBehaviour
         controls.Player.aimButton.performed += ctx => startAiming();
         controls.Player.aimButton.canceled += ctx => stopAiming();
     }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
+
 
     private void Update()
     {
@@ -60,16 +62,21 @@ public class crosshairFunctions : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
 
-    private void OnDisable()
+    public void EquipWeapon(WeaponInstance weapon)
     {
-        controls.Disable();
-    }
+        // Destruir mira anterior
+        if (currentCrosshairObj != null)
+            Destroy(currentCrosshairObj);
 
+        // Instanciar la nueva
+        currentCrosshairObj = Instantiate(weapon.weaponData.crosshairPrefab, transform);
+        activeCrosshair = currentCrosshairObj.GetComponent<CrosshairBase>();
+
+        // Ajustar zoom único de esa arma
+        // cuando las mejoras del arma influyan en el zoom, regresaremos por aqui.
+        weaponCameraDistance = activeCrosshair.ZoomCameraDistance;
+    }
 
 
     private void startAiming()
@@ -78,12 +85,10 @@ public class crosshairFunctions : MonoBehaviour
 
         activeCrosshair.gameObject.SetActive(true);
 
-        if (activeCrosshair is crosshairRifle crosshairRifle)
-        {
-            thirdPersonFollow.CameraDistance = crosshairRifle.zoomCameraDistance;
-        }
-
         playerManagerScript.aiming = true;
+
+        // Ajustar zoom único de esa arma
+        thirdPersonFollow.CameraDistance = weaponCameraDistance;
 
         playerManagerScript.playerAnimator.SetBool("aiming", true);
         playerManagerScript.playerAnimator.SetTrigger("toAim");
@@ -100,22 +105,11 @@ public class crosshairFunctions : MonoBehaviour
 
         playerManagerScript.aiming = false;
 
-
         playerManagerScript.playerAnimator.SetBool("aiming", false);
 
         thirdPersonFollow.CameraDistance = defaultCameraDistance;
 
-
-
-        ;
-
-
     }
 
-    private void switchCrosshair(CrosshairBase newCrossHair)
-    {
-        activeCrosshair.gameObject.SetActive(false);
 
-        activeCrosshair = newCrossHair;
-    }
 }

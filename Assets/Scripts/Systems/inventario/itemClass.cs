@@ -6,6 +6,12 @@ public class ItemClass : ScriptableObject
     public string itemID;
     public string itemName;
     public string itemDescription;
+
+    public int inventorySlots;
+
+    public bool inventorySlotsCount;
+
+
     public Sprite itemIcon;
     //public int itemQuantity;
     public ItemType itemtypeEnum;
@@ -23,9 +29,11 @@ public class ItemClass : ScriptableObject
 public enum ItemType
 {
     weapon,
-    potion,
-    armor,
+    consumable,
     key,
-    questitems,
-    accesories
+    questitem,
+    accesory,
+    Map
 }
+
+

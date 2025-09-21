@@ -22,4 +22,13 @@ public class playerManager : MonoBehaviour
 
     public bool playerMoving;
 
+
+    // [Header("variables del inventario")]
+
+
+    // [Header("variables del cambio de arma")]
+
+
+
+
 }
