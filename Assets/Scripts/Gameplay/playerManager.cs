@@ -14,6 +14,12 @@ public class playerManager : MonoBehaviour
 
     public Animator playerAnimator;
 
-    [Range(0, 100)]
-    public int precision;
+    public bool aiming;
+
+
+    [Range(0, 1)]
+    public float precision;
+
+    public bool playerMoving;
+
 }

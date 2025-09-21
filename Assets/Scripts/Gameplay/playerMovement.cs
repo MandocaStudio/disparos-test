@@ -43,6 +43,7 @@ public class playerMovement : MonoBehaviour
 
     [SerializeField] private float mouseSensitivity;   // sensibilidad más baja
     [SerializeField] private float gamepadSensitivity;  // sensibilidad más alta
+
     private void Awake()
     {
         // mouseSensitivity = 0.1f;
@@ -165,8 +166,21 @@ public class playerMovement : MonoBehaviour
         rbPlayer.linearVelocity = velocity;
 
         // --- Rotación del jugador ---
-        if (moveInput.magnitude > 0.1f) // SOLO si se mueve
+
+        if (moveInput.magnitude > 0.1f)
         {
+            playerManagerScript.playerMoving = true;
+
+        }
+        else
+        {
+            playerManagerScript.playerMoving = false;
+
+        }
+
+        if (moveInput.magnitude > 0.1f || playerManagerScript.aiming) // SOLO si se mueve
+        {
+
             float cameraYaw = cameraTarget.transform.eulerAngles.y;
             Quaternion targetRotation = Quaternion.Euler(0, cameraYaw, 0);
 
@@ -190,6 +204,7 @@ public class playerMovement : MonoBehaviour
         else
         {
             // El jugador está quieto
+
             wasIdle = true;
         }
 

@@ -3,35 +3,37 @@ using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.PlayerLoop;
 
 
 public class crosshairFunctions : MonoBehaviour
 {
     public CinemachineCamera playerCam;
 
-    [Header("para rifle")]
-    [SerializeField] private RectTransform topRifle;
-    [SerializeField] private RectTransform bottomRifle;
-    [SerializeField] private RectTransform leftRifle;
-    [SerializeField] private RectTransform rightRifle;
+    [SerializeField] private crosshairRifle RifleCrosshair;
 
-    [SerializeField] private Image centerRifle;
-    [SerializeField] private CanvasGroup crossHairRifleCG;
+    // [SerializeField] private crosshairPistol PistolCrosshair;
 
+    // [SerializeField] private crosshairShotgun ShotgunCrosshair;
 
-
-    [Header("Ajustes rifle")]
-    [SerializeField] private float baseSize = 20f; // distancia mínima
-    [SerializeField] private float maxExpand = 60f; // expansión máxima
-    [SerializeField] private float expandSpeed = 5f; // velocidad de cambio
+    [SerializeField] private CrosshairBase activeCrosshair;
 
     public playerManager playerManagerScript;
     public PlayerControls controls;
 
+    [SerializeField] private float decaySpeed = 2f; // velocidad para volver a 0
+
+
+    public float defaultCameraDistance = 1.5f;
     private void Awake()
     {
-        crossHairRifleCG = GetComponent<CanvasGroup>();
-        crossHairRifleCG.alpha = 0;
+
+        RifleCrosshair.gameObject.SetActive(false);
+        // crosshairPistol.gameObject.SetActive(false);
+        // crosshairShotgun.gameObject.SetActive(false);
+
+
+        activeCrosshair = RifleCrosshair;
 
         playerCam = playerManagerScript.playerCam;
 
@@ -39,6 +41,23 @@ public class crosshairFunctions : MonoBehaviour
 
         controls.Player.aimButton.performed += ctx => startAiming();
         controls.Player.aimButton.canceled += ctx => stopAiming();
+    }
+
+    private void Update()
+    {
+        float targetPrecision = 0f;
+
+        if (playerManagerScript.playerMoving) targetPrecision += 0.3f;
+        //if (player.isShooting) targetPrecision += 0.2f;
+
+        targetPrecision = Mathf.Clamp01(targetPrecision);
+
+        playerManagerScript.precision = Mathf.MoveTowards(playerManagerScript.precision, targetPrecision, Time.deltaTime * decaySpeed);
+
+        if (activeCrosshair != null)
+        {
+            activeCrosshair.SetPrecision(playerManagerScript.precision);
+        }
     }
 
     private void OnEnable()
@@ -51,19 +70,21 @@ public class crosshairFunctions : MonoBehaviour
         controls.Disable();
     }
 
-    private void Update()
-    {
-        //funcionalidad solo para el rifle (las miras seran diferentes dependiendo el arma)
 
-
-
-    }
 
     private void startAiming()
     {
         CinemachineThirdPersonFollow thirdPersonFollow = playerCam.GetComponent<CinemachineThirdPersonFollow>();
-        thirdPersonFollow.CameraDistance = 0.9f;
-        crossHairRifleCG.alpha = 1;
+
+        activeCrosshair.gameObject.SetActive(true);
+
+        if (activeCrosshair is crosshairRifle crosshairRifle)
+        {
+            thirdPersonFollow.CameraDistance = crosshairRifle.zoomCameraDistance;
+        }
+
+        playerManagerScript.aiming = true;
+
         playerManagerScript.playerAnimator.SetBool("aiming", true);
         playerManagerScript.playerAnimator.SetTrigger("toAim");
 
@@ -75,11 +96,26 @@ public class crosshairFunctions : MonoBehaviour
     {
         CinemachineThirdPersonFollow thirdPersonFollow = playerCam.GetComponent<CinemachineThirdPersonFollow>();
 
-        crossHairRifleCG.alpha = 0;
+        activeCrosshair.gameObject.SetActive(false);
+
+        playerManagerScript.aiming = false;
+
+
         playerManagerScript.playerAnimator.SetBool("aiming", false);
 
-        thirdPersonFollow.CameraDistance = 1.5f;
+        thirdPersonFollow.CameraDistance = defaultCameraDistance;
 
 
+
+        ;
+
+
+    }
+
+    private void switchCrosshair(CrosshairBase newCrossHair)
+    {
+        activeCrosshair.gameObject.SetActive(false);
+
+        activeCrosshair = newCrossHair;
     }
 }
