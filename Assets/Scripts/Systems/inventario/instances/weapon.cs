@@ -10,11 +10,20 @@ public class WeaponInstance
     public float currentFireRate;
     public float currentRange;
 
+    public GameObject worldModel;
+
+
     public WeaponInstance(Weapon baseWeapon)
     {
         weaponData = baseWeapon;
         currentDamage = baseWeapon.baseDamage;
         currentFireRate = baseWeapon.baseFireRate;
         currentRange = baseWeapon.baseRange;
+
+        if (weaponData.weaponPrefab != null)
+        {
+            worldModel = GameObject.Instantiate(weaponData.weaponPrefab);
+            worldModel.SetActive(false);
+        }
     }
 }

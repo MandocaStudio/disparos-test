@@ -6,15 +6,25 @@ public class ItemInstance
     public ItemClass itemData;
     public int quantity;
 
-    public ItemInstance(ItemClass data, int qty)
+    // Si es un arma, se asigna automáticamente
+    public WeaponInstance weaponInstance;
+
+    public ItemInstance(ItemClass data, int amount = 1)
     {
         itemData = data;
-        quantity = qty;
+        quantity = amount;
+
+        if (data.itemtypeEnum == ItemType.weapon)
+        {
+            Weapon weaponData = data as Weapon;
+            weaponInstance = new WeaponInstance(weaponData);
+        }
     }
 
-    // Devuelve true si este item es un arma
-    public bool IsWeapon()
+    public bool IsStackableWith(ItemInstance other)
     {
-        return itemData.itemtypeEnum == ItemType.weapon;
+        if (itemData.itemtypeEnum == ItemType.weapon) return false;
+        if (!itemData.isStackable || !other.itemData.isStackable) return false;
+        return itemData.itemID == other.itemData.itemID;
     }
 }

@@ -9,7 +9,7 @@ public class Key : ItemClass
     public bool oneUse;
     public void Initialize(string name, string description, Sprite icon, bool Use, string keyName)
     {
-        base.Initialize(name, description, icon, ItemType.key);
+        base.Initialize(name, description, icon, ItemType.key, itemSize, isStackable, maxStack);
 
         oneUse = Use;
 
@@ -49,7 +49,7 @@ public class consumable : ItemClass
 
     public void Initialize(string name, string description, Sprite icon, int amount, consumableType Type)
     {
-        base.Initialize(name, description, icon, ItemType.consumable);
+        base.Initialize(name, description, icon, ItemType.consumable, itemSize, isStackable, maxStack);
 
         potionAmount = amount;
         potionType = Type;
@@ -66,7 +66,7 @@ public class questitem : ItemClass
 
     public void Initialize(string name, string description, Sprite icon, string itemName)
     {
-        base.Initialize(name, description, icon, ItemType.questitem);
+        base.Initialize(name, description, icon, ItemType.questitem, itemSize, isStackable, maxStack);
 
         questItemName = itemName;
 
@@ -89,7 +89,7 @@ public class Weapon : ItemClass
 
     public void Initialize(string name, string description, Sprite icon, float Damage, float fireRate, GameObject crosshair, GameObject prefab, float Range)
     {
-        base.Initialize(name, description, icon, ItemType.weapon);
+        base.Initialize(name, description, icon, ItemType.weapon, itemSize, isStackable, maxStack);
 
         baseDamage = Damage;
         baseRange = Range;
@@ -101,10 +101,10 @@ public class Weapon : ItemClass
 }
 
 
-[CreateAssetMenu(fileName = "NewWeaponAmount", menuName = "Inventory/Amount")]
+[CreateAssetMenu(fileName = "NewWeaponAmmo", menuName = "Inventory/ammo")]
 public class ammo : ItemClass
 {
-    public enum AmountType
+    public enum ammoType
     {
         shootgun,
         pistol,
@@ -113,12 +113,12 @@ public class ammo : ItemClass
         //no que mas
     }
 
-    public AmountType amountTypeVar; // referencia a la mira
+    public ammoType amountTypeVar; // referencia a la mira
 
 
-    public void Initialize(string name, string description, Sprite icon, AmountType amountType)
+    public void Initialize(string name, string description, Sprite icon, ammoType amountType)
     {
-        base.Initialize(name, description, icon, ItemType.weapon);
+        base.Initialize(name, description, icon, ItemType.ammo, itemSize, isStackable, maxStack);
 
         amountTypeVar = amountType;
 
